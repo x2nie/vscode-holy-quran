@@ -18,9 +18,11 @@ export default class HolyQuranPanel {
 
 	public static readonly viewType = 'holyQuran';
 
-	private readonly _panel: vscode.WebviewPanel;
+	private readonly _webview: vscode.WebviewPanel;
 	private readonly _extensionPath: string;
 	private _disposables: vscode.Disposable[] = [];
+
+	get ready() {return this._webview.visible;}
 
 	public static createOrShow(extensionPath: string) {
 		const column = vscode.window.activeTextEditor
@@ -64,7 +66,7 @@ export default class HolyQuranPanel {
 			? vscode.window.activeTextEditor.viewColumn
 			: undefined;
 
-		this._panel = vscode.window.createWebviewPanel(
+		this._webview = vscode.window.createWebviewPanel(
 			HolyQuranPanel.viewType,
 			'Cat CodingT',
 			column || vscode.ViewColumn.One,
@@ -88,12 +90,12 @@ export default class HolyQuranPanel {
 
 		// Listen for when the panel is disposed
 		// This happens when the user closes the panel or when the panel is closed programatically
-		this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
+		this._webview.onDidDispose(() => this.dispose(), null, this._disposables);
 
 		// Update the content based on view changes
-		this._panel.onDidChangeViewState(
+		this._webview.onDidChangeViewState(
 			e => {
-				if (this._panel.visible) {
+				if (this._webview.visible) {
 					this._update();
 				}
 			},
@@ -102,7 +104,7 @@ export default class HolyQuranPanel {
 		);
 
 		// Handle messages from the webview
-		this._panel.webview.onDidReceiveMessage(
+		this._webview.webview.onDidReceiveMessage(
 			message => {
 				switch (message.command) {
 					case 'alert':
@@ -115,17 +117,19 @@ export default class HolyQuranPanel {
 		);
 	}
 
-	public doRefactor() {
+	public postMessage(message: any) {
 		// Send a message to the webview webview.
 		// You can send any JSON serializable data.
-		this._panel.webview.postMessage({ command: 'refactor' });
+		if(this.ready) {
+			this._webview.webview.postMessage(message /* { command: 'refactor' } */);
+		}
 	}
 
 	public dispose() {
 		// HolyQuranPanel.currentPanel = undefined;
 
 		// Clean up our resources
-		this._panel.dispose();
+		this._webview.dispose();
 
 		while (this._disposables.length) {
 			const x = this._disposables.pop();
@@ -136,10 +140,10 @@ export default class HolyQuranPanel {
 	}
 
 	private _update() {
-		const webview = this._panel.webview;
+		const webview = this._webview.webview;
 
 		// Vary the webview's content based on where it is located in the editor.
-		switch (this._panel.viewColumn) {
+		switch (this._webview.viewColumn) {
 			case vscode.ViewColumn.Two:
 				this._updateForCat(webview, 'Compiling Cat');
 				return;
@@ -156,8 +160,8 @@ export default class HolyQuranPanel {
 	}
 
 	private _updateForCat(webview: vscode.Webview, catName: keyof typeof cats) {
-		this._panel.title = catName;
-		this._panel.webview.html = this._getHtmlForWebview(webview, cats[catName]);
+		this._webview.title = catName;
+		this._webview.webview.html = this._getHtmlForWebview(webview, cats[catName]);
 	}
 
 	private _getHtmlForWebview(webview: vscode.Webview, catGifPath: string) {
