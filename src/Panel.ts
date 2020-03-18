@@ -10,7 +10,7 @@ const cats = {
 /**
  * Manages cat coding webview panels
  */
-export class HolyQuranPanel {
+export default class HolyQuranPanel {
 	/**
 	 * Track the currently panel. Only allow a single panel to exist at a time.
 	 */
@@ -163,7 +163,7 @@ export class HolyQuranPanel {
 	private _getHtmlForWebview(webview: vscode.Webview, catGifPath: string) {
 		// Local path to main script run in the webview
 		const scriptPathOnDisk = vscode.Uri.file(
-			path.join(this._extensionPath, 'public', 'main.js')
+			path.join(this._extensionPath, 'static', 'main.js')
 		);
 
 		// And the uri we use to load this script in the webview
