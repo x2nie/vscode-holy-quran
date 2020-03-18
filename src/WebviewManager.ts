@@ -19,9 +19,11 @@ let myCounter : number = 0;
 
 export class WebviewManager extends DisposableComponent {
 	private myPanels : DisposableComponent;
+	private readonly extensionPath: string;
 	// private myPanels : StatusbarTask[] = [];
-	constructor() {
+	constructor(extensionPath: string) {
 		super();
+		this.extensionPath = extensionPath;
 		this.myPanels = new DisposableComponent();
 		this.addDisposable(this.myPanels);
 		// this.addDisposable(vscode.workspace.onDidChangeConfiguration(() => {
@@ -30,5 +32,10 @@ export class WebviewManager extends DisposableComponent {
 		// this.addConfigureTaskButton();
 		
 		// this.reload();
+	}
+
+	AddPage(){
+		const hq = new HolyQuranPanel(this.extensionPath);
+		this.myPanels.addDisposable(hq);
 	}
 }

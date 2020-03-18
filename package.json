@@ -10,7 +10,7 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.helloWorld",
+		"*",
 		"onCommand:holyQuran.start"
 	],
 	"main": "./out/extension.js",

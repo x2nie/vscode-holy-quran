@@ -27,6 +27,6 @@ export class DisposableComponent implements Disposable {
 	}
 	public clear() {
         this.dispose();
-        this.disposables = []
+        this.disposables = [];
 	}
 }

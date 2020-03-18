@@ -24,7 +24,7 @@
                 text: '🐛  on line ' + currentCount
             });
         }
-    }, 2000);
+    }, 1000);
 
     // Handle messages sent from the extension to the webview
     window.addEventListener('message', event => {
