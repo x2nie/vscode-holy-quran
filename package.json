@@ -11,10 +11,28 @@
 	],
 	"activationEvents": [
 		"*",
+		"onView:nodeDependencies",
 		"onCommand:holyQuran.start"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "quran-explorer",
+					"title": "Quran Explorer",
+					"icon": "images/quran-activity-bar.svg"
+				}
+			]
+		},
+		"views": {
+			"quran-explorer": [
+				{
+					"id": "nodeDependencies",
+					"name": "Node Dependencies"
+				}
+			]
+		},
 		"commands": [
 			{
 				"command": "extension.helloWorld",

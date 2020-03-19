@@ -3,6 +3,7 @@
 import * as vscode from 'vscode';
 import HolyQuranPanel from './Panel';
 import {TanzilEngine} from './TanzilEngine';
+import { DepNodeProvider, Dependency } from './nodeDependencies';
 
 console.log('your extension "quran" js is loaded.');
 
@@ -42,6 +43,13 @@ export function activate(context: vscode.ExtensionContext) {
 			// panel.webview.html = getWebviewContent();
 		})
 	);
+	
+	// Samples of `window.registerTreeDataProvider`
+	const nodeDependenciesProvider = new DepNodeProvider();
+	vscode.window.registerTreeDataProvider('nodeDependencies', nodeDependenciesProvider);
+	vscode.commands.registerCommand('nodeDependencies.open', (surah: string) => vscode.window.showInformationMessage(`Successfully called edit entry on ${surah}.`));
+	// vscode.commands.registerCommand('nodeDependencies.open', (node: Dependency) => vscode.window.showInformationMessage(`Successfully called edit entry on ${node.label}.`));
+	
 	context.subscriptions.push(
 		vscode.commands.registerCommand('holyQuran.doRefactor', () => {
 			// if (HolyQuranPanel.currentPanel) {

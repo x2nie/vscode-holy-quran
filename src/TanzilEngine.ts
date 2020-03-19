@@ -22,7 +22,8 @@ export class TanzilEngine {
     private counter: number = 0;
     private constructor(extensionPath: string) {
         this.extensionPath = extensionPath;
-        this.statusbar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 200);
+        this.statusbar = vscode.window.createStatusBarItem(
+            vscode.StatusBarAlignment.Right, -2000);
         this.statusbar.text = `${TanzilEngine.icon}`;
         this.statusbar.command = 'holyQuran.start';
         this.statusbar.tooltip = 'Holy Quran #9:13\nSurah Maryam';
